@@ -2,11 +2,48 @@ import React from "react";
 import { GraduationCap } from "lucide-react";
 import { Button } from "./button";
 
+
+
 import { AvatarFallback,Avatar, AvatarImage } from "./avatar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "sonner";
+import { setUser } from "@/redux/authSlice";
 
 const Navbar = () => {
-  const user = false;
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
+ const {user}=useSelector(store=>store.auth)
+
+ const logoutHandler=async()=>{
+   try {
+        
+        const response=await axios.get("http://localhost:9000/api/user/logout",{
+          
+          withCredentials:true
+        })
+  
+        if(response.data.success){
+          navigate("/")
+          dispatch(setUser(null))
+          toast.success(response.data.message)
+          
+        }else{
+            toast.error(response.data.message || "Something went wrong");
+        }
+  
+  
+  
+      } catch (error) {
+         const message =
+        error.response?.data?.message || "Something went wrong";
+  
+      toast.error(message);
+  
+        
+      }
+ }
   return (
     <div className="bg-gray-900 z-50 w-full py-3 fixed top-0">
       <div className="max-w-7xl mx-auto flex justify-between">
@@ -29,11 +66,13 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center gap-7">
-                <Avatar>
+                <Link to="/profile">
+                 <Avatar>
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <Button className="bg-blue-500 hover:bg-blue-600  cursor-pointer">Logout</Button>
+                </Link>
+                <Button onClick={logoutHandler} className="bg-blue-500 hover:bg-blue-600  cursor-pointer">Logout</Button>
               </div>
             )}
           </ul>

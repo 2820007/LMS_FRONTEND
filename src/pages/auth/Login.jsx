@@ -1,10 +1,66 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import React from "react";
-import { Link } from "react-router-dom";
+import { setUser } from "@/redux/authSlice";
+import axios from "axios";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Login = () => {
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
+  
+    const [users,setUsers]=useState({
+     
+      userEmail:"",
+      userPassword:"",
+      
+  
+    })
+  
+  
+    const handleChange=(e)=>{
+      const {name,value}=e.target
+      setUsers((prev)=>({
+        ...prev,
+        [name]:value
+      }))
+    }
+  
+    const handleSubmit= async(e)=>{
+      e.preventDefault(),
+      console.log(users)
+      try {
+        
+        const response=await axios.post("http://localhost:9000/api/user/login",users,{
+          headers:{
+            "Content-Type":"application/json"
+          },
+          withCredentials:true
+        })
+  
+        if(response.data.success){
+          navigate("/")
+          dispatch(setUser(response.data.user))
+          toast.success(response.data.message)
+          
+        }else{
+            toast.error(response.data.message || "Something went wrong");
+        }
+  
+  
+  
+      } catch (error) {
+         const message =
+        error.response?.data?.message || "Something went wrong";
+  
+      toast.error(message);
+  
+        
+      }
+    }
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full ">
@@ -16,13 +72,26 @@ const Login = () => {
         </p>
         <div className="mb-4">
           <Label>Email Address</Label>
-          <Input placeholder="enter your email address" />
+          <Input placeholder="enter your email address"
+
+          name="userEmail"
+          value={users.userEmail}
+          onChange={handleChange}
+          type="email"
+          id="userEmail"
+           />
         </div>
         <div className="mb-4">
           <Label>Password</Label>
-          <Input placeholder="create your password" />
+          <Input placeholder="create your password"
+           name="userPassword"
+          value={users.userPassword}
+          onChange={handleChange}
+          type="password"
+          id="userPassword"
+           />
         </div>
-        <Button className="w-full bg-blue-500 cursor-pointer hover:bg-blue-600">
+        <Button onClick={handleSubmit} className="w-full bg-blue-500 cursor-pointer hover:bg-blue-600">
           Login
         </Button>
         <div className="flex items-center my-6">
