@@ -6,6 +6,9 @@ import Courses from "./pages/Courses"
 import Login from "./pages/auth/Login"
 import Singup from "./pages/auth/Singup"
 import Profile from "./pages/Profile"
+import Admin from "./pages/admin/Admin"
+import Dashboard from "./pages/admin/Dashboard"
+import Course from "./pages/admin/Course"
 // import Footer from "./components/ui/Footer"
 
 const  App =()=>{
@@ -22,9 +25,25 @@ const  App =()=>{
      {
       path:"/signup", element:<> <Navbar/> <Singup/></>
     },
+    
     {
       path:"/profile", element:<> <Navbar/> <Profile/></>
     },
+
+    {
+      path:"/admin", element:<> <Navbar/> <Admin/></>,
+      children:[
+        {
+          path:"dashboard" ,
+          element:<Dashboard/>
+        },
+         {
+          path:"course" ,
+          element:<Course/>
+        },
+      ]
+    },
+
 
   ])
   return(
