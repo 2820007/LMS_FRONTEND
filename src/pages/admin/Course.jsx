@@ -60,7 +60,13 @@ const Course = () => {
         <TableBody>
           {course?.map((course) => (
             <TableRow key={course._id}>
-              <TableCell className="md:w-75 flex items-center gap-2">{course.courseTitle}</TableCell>
+              <TableCell className="md:w-75 flex items-center gap-2">
+                <img src={course?.courseThumbnail} alt="" className="w-20 h-20 rounded-sm md:hidden" />
+
+                {course.courseTitle}
+                </TableCell>
+
+
               <TableCell>{course.coursePrice  || "NA"}</TableCell>
                <TableCell className="text-center"><Badge className={course.isPublished? "bg-green-400" :"bg-red-400"}>{course.isPublished ? "Published" :"Draft"}</Badge></TableCell>
                <TableCell className="text-right"><Button onClick={()=>{
