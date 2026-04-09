@@ -7,7 +7,7 @@ const Dashboard = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-semibold text-blue-400">Dashboard</h1>
-        <p className="text-gray-400">Overview of your platform</p>
+        
       </div>
 
       {/* Stats */}

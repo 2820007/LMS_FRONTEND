@@ -9,6 +9,8 @@ import Profile from "./pages/Profile"
 import Admin from "./pages/admin/Admin"
 import Dashboard from "./pages/admin/Dashboard"
 import Course from "./pages/admin/Course"
+import CreateCourse from "./pages/admin/CreateCourse"
+import UpdateCourse from "./pages/admin/UpdateCourse"
 // import Footer from "./components/ui/Footer"
 
 const  App =()=>{
@@ -40,6 +42,14 @@ const  App =()=>{
          {
           path:"course" ,
           element:<Course/>
+        },
+        {
+          path:"course/create" ,
+          element:<CreateCourse/>
+        },
+         {
+          path:"course/:courseId" ,
+          element:<UpdateCourse/>
         },
       ]
     },
